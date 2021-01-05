@@ -105,7 +105,7 @@ def play():
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=495, column=115)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=mx, column=my)
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
                 pygame.display.flip()
         while currentLevel == 2:
             currentStage = maps['Map2']
@@ -183,6 +183,7 @@ def play():
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=515)
                 pygame.display.flip()
+
 # GAME:
 
 main()

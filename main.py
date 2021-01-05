@@ -231,6 +231,17 @@ while True:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 # on launch show clouds background
 # show 3 buttons ontop of background
 #     1. Play

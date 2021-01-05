@@ -80,6 +80,7 @@ def play():
     currentLevel = 1
     currentMap = maps['Clouds']
     Hole = sprites['Hole']
+    Ball = sprites['Golf Ball']
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'play':
         time.sleep(1/60)
@@ -103,6 +104,8 @@ def play():
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=495, column=115)
+                mx, my = pygame.mouse.get_pos()
+                renderMap(mapFile=Ball, row=mx, column=my)
                 pygame.display.flip()
         while currentLevel == 2:
             currentStage = maps['Map2']

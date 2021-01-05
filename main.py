@@ -79,7 +79,7 @@ def main():
 def play():
     currentLevel = 1
     currentMap = maps['Clouds']
-    currentHole = sprites['']
+    Hole = sprites['Hole']
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'play':
         time.sleep(1/60)
@@ -102,6 +102,7 @@ def play():
                 time.sleep(1 / 60)
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
+                renderMap(mapFile=Hole, row=495, column=115)
                 pygame.display.flip()
 # GAME:
 

@@ -79,6 +79,7 @@ def main():
 def play():
     currentLevel = 1
     currentMap = maps['Clouds']
+    currentHole = sprites['']
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'play':
         time.sleep(1/60)

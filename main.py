@@ -1,4 +1,5 @@
 import pygame
+from pygame import *
 from lib.maps import *
 from pygame.locals import *
 import sys
@@ -76,30 +77,35 @@ def main():
         pygame.display.flip()
 
 def play():
+    currentLevel = 1
     currentMap = maps['Clouds']
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'play':
         time.sleep(1/60)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEMOTION:
-                mx, my = pygame.mouse.get_pos()
-                print("x:", mx, "y:", my)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mx, my = pygame.mouse.get_pos()
-                print("x:", mx, "y:", my)
-                mouseEvents.mouseDown(game, pygame.mouse.get_pos())
-            time.sleep(1 / 60)
-            renderMap(mapFile=currentMap, row=0, column=0)
-            renderMap(mapFile=currentLevel, row=0, column=0)
-            pygame.display.flip()
+        mixer.music.load('./sounds/Elsie.mp3')
+        mixer.music.play(-1)
+        while currentLevel == 1:
+            currentStage = maps['Map1']
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("Exiting...")
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEMOTION:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                time.sleep(1 / 60)
+                renderMap(mapFile=currentMap, row=0, column=0)
+                renderMap(mapFile=currentStage, row=0, column=0)
+                pygame.display.flip()
 # GAME:
 
 main()
 if game.gameMode == 'play':
-    currentLevel = maps['Map1']
     play()
 else:
     main()

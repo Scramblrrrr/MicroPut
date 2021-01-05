@@ -187,8 +187,8 @@ def play():
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
                 if game.gameMode == 'next':
-                    currentLevel = 1
-                    game.gameMode = 'splash'
+                    currentLevel += 1
+                    game.gameMode = 'play'
                     main()
                 pygame.display.flip()
         while currentLevel == 5:
@@ -214,18 +214,19 @@ def play():
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
                 if game.gameMode == 'next':
-                    currentLevel += 1
-                    game.gameMode = 'play'
+                    currentLevel = 1
+                    game.gameMode = 'splash'
                 pygame.display.flip()
 
 # GAME:
 
 currentLevel = 1
 main()
-if game.gameMode == 'play':
-    play()
-else:
-    main()
+while True:
+    if game.gameMode == 'play':
+        play()
+    else:
+        main()
 
 
 

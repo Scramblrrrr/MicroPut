@@ -104,6 +104,82 @@ def play():
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=495, column=115)
                 pygame.display.flip()
+        while currentLevel == 2:
+            currentStage = maps['Map2']
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("Exiting...")
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEMOTION:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                time.sleep(1 / 60)
+                renderMap(mapFile=currentMap, row=0, column=0)
+                renderMap(mapFile=currentStage, row=0, column=0)
+                renderMap(mapFile=Hole, row=125, column=80)
+                pygame.display.flip()
+        while currentLevel == 3:
+            currentStage = maps['Map3']
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("Exiting...")
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEMOTION:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                time.sleep(1 / 60)
+                renderMap(mapFile=currentMap, row=0, column=0)
+                renderMap(mapFile=currentStage, row=0, column=0)
+                renderMap(mapFile=Hole, row=90, column=485)
+                pygame.display.flip()
+        while currentLevel == 4:
+            currentStage = maps['Map4']
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("Exiting...")
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEMOTION:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                time.sleep(1 / 60)
+                renderMap(mapFile=currentMap, row=0, column=0)
+                renderMap(mapFile=currentStage, row=0, column=0)
+                renderMap(mapFile=Hole, row=265, column=65)
+                pygame.display.flip()
+        while currentLevel == 5:
+            currentStage = maps['Map5']
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("Exiting...")
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEMOTION:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    print("x:", mx, "y:", my)
+                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                time.sleep(1 / 60)
+                renderMap(mapFile=currentMap, row=0, column=0)
+                renderMap(mapFile=currentStage, row=0, column=0)
+                renderMap(mapFile=Hole, row=90, column=515)
+                pygame.display.flip()
 # GAME:
 
 main()

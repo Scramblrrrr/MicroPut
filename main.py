@@ -77,11 +77,11 @@ def main():
         pygame.display.flip()
 
 def play():
-    currentLevel = 1
     currentMap = maps['Clouds']
     Hole = sprites['Hole']
     Ball = sprites['Golf Ball']
     mouseEvents = mouse_events.MouseEvents(screen)
+    currentLevel = 1
     while game.gameMode == 'play':
         time.sleep(1/60)
         mixer.music.load('./sounds/Elsie.mp3')
@@ -106,6 +106,11 @@ def play():
                 renderMap(mapFile=Hole, row=495, column=115)
                 mx, my = pygame.mouse.get_pos()
                 renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+                splashScreen("Next", 570, 600)
+                if game.gameMode == 'next':
+                    currentLevel += 1
+                    game.gameMode = 'play'
                 pygame.display.flip()
         while currentLevel == 2:
             currentStage = maps['Map2']
@@ -125,6 +130,13 @@ def play():
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=125, column=80)
+                mx, my = pygame.mouse.get_pos()
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+                splashScreen("Next", 570, 600)
+                if game.gameMode == 'next':
+                    currentLevel += 1
+                    game.gameMode = 'play'
                 pygame.display.flip()
         while currentLevel == 3:
             currentStage = maps['Map3']
@@ -144,6 +156,13 @@ def play():
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=485)
+                mx, my = pygame.mouse.get_pos()
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+                splashScreen("Next", 570, 600)
+                if game.gameMode == 'next':
+                    currentLevel += 1
+                    game.gameMode = 'play'
                 pygame.display.flip()
         while currentLevel == 4:
             currentStage = maps['Map4']
@@ -163,6 +182,14 @@ def play():
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=265, column=65)
+                mx, my = pygame.mouse.get_pos()
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+                splashScreen("Next", 570, 600)
+                if game.gameMode == 'next':
+                    currentLevel = 1
+                    game.gameMode = 'splash'
+                    main()
                 pygame.display.flip()
         while currentLevel == 5:
             currentStage = maps['Map5']
@@ -182,18 +209,23 @@ def play():
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=515)
+                mx, my = pygame.mouse.get_pos()
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+                splashScreen("Next", 570, 600)
+                if game.gameMode == 'next':
+                    currentLevel += 1
+                    game.gameMode = 'play'
                 pygame.display.flip()
 
 # GAME:
 
+currentLevel = 1
 main()
 if game.gameMode == 'play':
     play()
 else:
     main()
-
-
-
 
 
 

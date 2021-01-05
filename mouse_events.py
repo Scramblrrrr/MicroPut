@@ -1,6 +1,9 @@
 import sys
 import pygame
 
+
+
+
 class MouseEvents:
     def __init__(self, screen):
         self.screen = screen
@@ -18,6 +21,10 @@ class MouseEvents:
                 sys.exit()
             else:
                 print('No valid option selected!')
+        elif game.gameMode == 'play':
+            if mousePosition[0] in range(560, 640) and mousePosition[1] in range(600, 640):
+                print('Going to next level...')
+                game.gameMode = 'next'
 
 
     # def mouseMove(self):

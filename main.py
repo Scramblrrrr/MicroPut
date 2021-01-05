@@ -93,11 +93,13 @@ def play():
                 mouseEvents.mouseDown(game, pygame.mouse.get_pos())
             time.sleep(1 / 60)
             renderMap(mapFile=currentMap, row=0, column=0)
+            renderMap(mapFile=currentLevel, row=0, column=0)
             pygame.display.flip()
 # GAME:
 
 main()
 if game.gameMode == 'play':
+    currentLevel = maps['Map1']
     play()
 else:
     main()

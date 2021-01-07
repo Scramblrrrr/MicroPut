@@ -126,7 +126,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 print("x:", mx, "y:", my)
-                mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
         renderMap(mapFile=currentMap, row=0, column=0)
         pygame.draw.rect(surface=currentMap, color=(0, 255, 0), rect=((320, 200), (100, 40)))
         splashScreen("Play", 350, 205)
@@ -159,7 +159,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=495, column=115)
@@ -183,7 +183,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=125, column=80)
@@ -207,7 +207,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=485)
@@ -231,7 +231,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=265, column=65)
@@ -255,7 +255,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=515)

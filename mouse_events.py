@@ -31,7 +31,7 @@ class MouseEvents:
                         print("in box")
                         state.ballState = 'placed'
                     else:
-                        pass
+                        print('Invalid Ball Location')
                 elif stage.gameStage == 2:
                     if mousePosition[0] in range(100, 200) and mousePosition[1] in range(100, 200):
                         print("in box")

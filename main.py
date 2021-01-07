@@ -26,6 +26,14 @@ class Game:
     def __init__(self):
         self.gameMode = 'splash'
 
+class State:
+    def __init__(self):
+        self.ballState = 'splash'
+
+class Stage:
+    def __init__(self):
+        self.gameStage = 1
+
 class Ball(pygame.sprite.Sprite):
     """
     Attributes: directionX, directionY, initialAngle, currentAngle, speed, image
@@ -78,15 +86,6 @@ class Bumper(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = center_pixel
 
-
-
-
-
-
-
-
-
-
 def renderMap(mapFile, row, column):
     screen.blit(mapFile, (row, column))
 
@@ -108,11 +107,14 @@ def splashScreen(a, b, c):
 pygame.init()
 currentMap = maps['Homescreen']
 
+stage = Stage()
 game = Game()
+state = State()
 
 def main():
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'splash':
+        state.ballState = 'splash'
         time.sleep(1/60)    # limits event polling to 60 times per second
         for event in pygame.event.get():    # iterate the event stack
             if event.type == pygame.QUIT:
@@ -124,7 +126,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 print("x:", mx, "y:", my)
-                mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
         renderMap(mapFile=currentMap, row=0, column=0)
         pygame.draw.rect(surface=currentMap, color=(0, 255, 0), rect=((320, 200), (100, 40)))
         splashScreen("Play", 350, 205)
@@ -139,12 +141,12 @@ def play():
     Hole = sprites['Hole']
     Ball = sprites['Golf Ball']
     mouseEvents = mouse_events.MouseEvents(screen)
-    currentLevel = 1
     while game.gameMode == 'play':
         time.sleep(1/60)
         mixer.music.load('./sounds/Elsie.mp3')
         mixer.music.play(-1)
-        while currentLevel == 1:
+        state.ballState = 'free'
+        while stage.gameStage == 1:
             currentStage = maps['Map1']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -157,19 +159,18 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=495, column=115)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                if state.ballState == 'free':
+                    renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
-                if game.gameMode == 'next':
-                    currentLevel += 1
-                    game.gameMode = 'play'
                 pygame.display.flip()
-        while currentLevel == 2:
+        state.ballState = 'free'
+        while stage.gameStage == 2:
             currentStage = maps['Map2']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -182,19 +183,18 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=125, column=80)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                if state.ballState == 'free':
+                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
-                if game.gameMode == 'next':
-                    currentLevel += 1
-                    game.gameMode = 'play'
                 pygame.display.flip()
-        while currentLevel == 3:
+        state.ballState = 'free'
+        while stage.gameStage == 3:
             currentStage = maps['Map3']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -207,19 +207,18 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=485)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                if state.ballState == 'free':
+                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
-                if game.gameMode == 'next':
-                    currentLevel += 1
-                    game.gameMode = 'play'
                 pygame.display.flip()
-        while currentLevel == 4:
+        state.ballState = 'free'
+        while stage.gameStage == 4:
             currentStage = maps['Map4']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -232,20 +231,18 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=265, column=65)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                if state.ballState == 'free':
+                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
-                if game.gameMode == 'next':
-                    currentLevel += 1
-                    game.gameMode = 'play'
-                    main()
                 pygame.display.flip()
-        while currentLevel == 5:
+        state.ballState = 'free'
+        while stage.gameStage == 5:
             currentStage = maps['Map5']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -258,16 +255,17 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, state, stage, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=515)
                 mx, my = pygame.mouse.get_pos()
-                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+                if state.ballState == 'free':
+                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
-                if game.gameMode == 'next':
-                    currentLevel = 1
+                if stage.gameStage == 6:
+                    stage.gameStage = 1
                     game.gameMode = 'splash'
                 pygame.display.flip()
 

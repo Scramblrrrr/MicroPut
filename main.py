@@ -26,6 +26,65 @@ class Game:
     def __init__(self):
         self.gameMode = 'splash'
 
+class Ball(pygame.sprite.Sprite):
+    """
+    Attributes: directionX, directionY, initialAngle, currentAngle, speed, image
+    Methods:    update(), collide()
+    """
+    def __init__(self):
+        super().__init__()
+        self.image = sprites['Golf Ball']
+        self.rect = self.image.get_rect()
+        self.rect.center = (150,500)
+        self.angle = math.radians(180+95)
+        self.speed = 4
+        self.dx = math.cos(self.angle) * self.speed
+        self.dy = math.sin(self.angle) * self.speed
+        self.positionx = self.rect.center[0]
+        self.positiony = self.rect.center[1]
+        #self.mask = pygame.mask.from_surface(self.image)
+
+    def update(self):
+        self.dx = math.cos(self.angle) * self.speed
+        self.dy = math.sin(self.angle) * self.speed
+        self.positionx += self.dx
+        self.positiony += self.dy
+        self.rect.center = (self.positionx, self.positiony)
+        if self.speed > 0:
+            self.speed = self.speed - 0.025
+        else:
+            self.speed = 0
+        #print(self.dx, self.dy)
+        #print(self.positionx,self.positiony)
+
+    def bumperhit(self,bumper):
+        alpha = math.degrees(self.angle) - bumper.angle
+        bounceangle = 180 - 2*alpha + math.degrees(self.angle)
+        self.angle = math.radians(bounceangle)
+        self.dx = math.cos(self.angle) * self.speed
+        self.dy = math.sin(self.angle) * self.speed
+
+#blalal
+class Bumper(pygame.sprite.Sprite):
+    """
+    fadfda
+    """
+    def __init__(self,center_pixel):
+        super().__init__()
+        self.image = sprites['Bumper45']
+        self.angle = 45
+        print(self.angle)
+        #self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        self.rect.center = center_pixel
+
+
+
+
+
+
+
+
 
 
 def renderMap(mapFile, row, column):

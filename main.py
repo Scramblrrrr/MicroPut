@@ -83,7 +83,6 @@ class Bumper(pygame.sprite.Sprite):
         self.image = sprites['Bumper45']
         self.angle = 45
         print(self.angle)
-        #self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         self.rect.center = center_pixel
 
@@ -108,15 +107,18 @@ def splashScreen(a, b, c):
 pygame.init()
 currentMap = maps['Homescreen']
 
+
+
 stage = Stage()
 game = Game()
 state = State()
 gameBall = Ball()
 ball_group = pygame.sprite.Group()
 ball_group.add(gameBall)
-bumper1 = Bumper((110,85))
+bumper1 = Bumper((82 + (141/2),56 + (141/2)))
 bumper_group = pygame.sprite.Group()
 bumper_group.add(bumper1)
+gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
 
 def main():
     mouseEvents = mouse_events.MouseEvents(screen)
@@ -154,6 +156,7 @@ def play():
         mixer.music.play(-1)
         state.ballState = 'free'
         while stage.gameStage == 1:
+            time.sleep(1/60)
             currentStage = maps['Map1']
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -167,24 +170,23 @@ def play():
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
                     mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
-                renderMap(mapFile=currentMap, row=0, column=0)
-                renderMap(mapFile=currentStage, row=0, column=0)
-                renderMap(mapFile=Hole, row=495, column=115)
-                mx, my = pygame.mouse.get_pos()
-                if state.ballState == 'free':
-                    renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
-                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
-                splashScreen("Next", 570, 600)
-                if state.ballState == 'placed':
-                    gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
-                    gameBall.update()
-                    ball_group.draw(screen)
-                    bumper_group.draw(screen)
-                    pygame.display.flip()
-                    bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
-                    if bumper_hits:
-                        gameBall.bumperhit(bumper1)
+            renderMap(mapFile=currentMap, row=0, column=0)
+            renderMap(mapFile=currentStage, row=0, column=0)
+            renderMap(mapFile=Hole, row=495, column=115)
+            mx, my = pygame.mouse.get_pos()
+            if state.ballState == 'free':
+                renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
+            pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+            splashScreen("Next", 570, 600)
+            if state.ballState == 'placed':
+                gameBall.update()
+                ball_group.draw(screen)
+                bumper_group.draw(screen)
                 pygame.display.flip()
+                bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
+                if bumper_hits:
+                    gameBall.bumperhit(bumper1)
+            pygame.display.flip()
         state.ballState = 'free'
         while stage.gameStage == 2:
             currentStage = maps['Map2']

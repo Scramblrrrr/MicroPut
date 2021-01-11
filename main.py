@@ -6,6 +6,7 @@ import sys
 import time
 import mouse_events
 from lib.sprites import *
+import math
 
 
 pygame.init()   # starts the pygame environment
@@ -110,6 +111,12 @@ currentMap = maps['Homescreen']
 stage = Stage()
 game = Game()
 state = State()
+gameBall = Ball()
+ball_group = pygame.sprite.Group()
+ball_group.add(gameBall)
+bumper1 = Bumper((110,85))
+bumper_group = pygame.sprite.Group()
+bumper_group.add(bumper1)
 
 def main():
     mouseEvents = mouse_events.MouseEvents(screen)
@@ -168,6 +175,15 @@ def play():
                     renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
                 pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
                 splashScreen("Next", 570, 600)
+                if state.ballState == 'placed':
+                    gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
+                    gameBall.update()
+                    ball_group.draw(screen)
+                    bumper_group.draw(screen)
+                    pygame.display.flip()
+                    bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
+                    if bumper_hits:
+                        gameBall.bumperhit(bumper1)
                 pygame.display.flip()
         state.ballState = 'free'
         while stage.gameStage == 2:
@@ -278,13 +294,6 @@ while True:
         play()
     else:
         main()
-
-
-
-
-
-
-
 
 
 

@@ -45,7 +45,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (165, 500)
         self.angle = math.radians(180+95)
-        self.speed = 0
+        self.speed = 7
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
         self.positionx = self.rect.center[0]
@@ -134,7 +134,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 print("x:", mx, "y:", my)
-                mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
         renderMap(mapFile=currentMap, row=0, column=0)
         pygame.draw.rect(surface=currentMap, color=(0, 255, 0), rect=((320, 200), (100, 40)))
         splashScreen("Play", 350, 205)
@@ -169,11 +169,10 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
             renderMap(mapFile=currentMap, row=0, column=0)
             renderMap(mapFile=currentStage, row=0, column=0)
             renderMap(mapFile=Hole, row=495, column=115)
-            renderMap(mapFile=SpeedChart, row=575, column=100)
             bumper_group.draw(screen)
             mx, my = pygame.mouse.get_pos()
             if game.ballState == 'free':
@@ -181,14 +180,29 @@ def play():
             pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
             splashScreen("Next", 570, 600)
             if game.ballState == 'placed':
+                time.sleep(1/60)
                 gameBall.positionx = mx+8
                 gameBall.positiony = my+8
                 game.ballState = 'selecting speed'
+                print(game.ballState)
             while game.ballState == 'selecting speed':
-                time.sleep(1/60)
-                # renderMap(mapFile=maps['SpeedChart'], row=575, column=100)
+                time.sleep(1/30)
+                renderMap(mapFile=SpeedChart, row=575, column=100)
                 if gameBall.speed >= 1 and gameBall.speed <= 6:
                     game.ballState = 'moving'
+                pygame.display.flip()
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEMOTION:
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
             if game.ballState == 'moving':
                 gameBall.update()
                 ball_group.draw(screen)
@@ -196,6 +210,9 @@ def play():
                 bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
                 if bumper_hits:
                     gameBall.bumperhit(bumper1)
+            if gameBall.speed == 0:
+                print("Stopped!")
+                # create a sequence that allows the player to change direction and speed again and again until they get the ball in the whole while keeping score (amount of "swings")
         game.ballState = 'free'
         while game.gameStage == 2:
             currentStage = maps['Map2']
@@ -210,7 +227,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=125, column=80)
@@ -234,7 +251,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=485)
@@ -258,7 +275,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=265, column=65)
@@ -282,7 +299,7 @@ def play():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
-                    mouseEvents.mouseDown(game, stage, state, pygame.mouse.get_pos())
+                    mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
                 renderMap(mapFile=currentMap, row=0, column=0)
                 renderMap(mapFile=currentStage, row=0, column=0)
                 renderMap(mapFile=Hole, row=90, column=515)
@@ -298,7 +315,15 @@ def play():
 
 # GAME:
 
-currentLevel = 1
+try:
+    f = open('High Score.txt', 'x')
+    f.close()
+except FileExistsError:
+    print("File exists...\nProceding to open existing file...")
+f = open('High Score.txt', 'r')
+PreviousHS = f.readline()
+f.close()
+print("PreviousHS: ", PreviousHS)
 main()
 while True:
     if game.gameMode == 'play':

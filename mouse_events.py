@@ -8,7 +8,7 @@ class MouseEvents:
     def __init__(self, screen):
         self.screen = screen
 
-    def mouseDown(self, game, stage, state, mousePosition):
+    def mouseDown(self, game, stage, state, gameBall, mousePosition):
         if game.gameMode == 'splash':
             if mousePosition[0] in range(320, 420) and mousePosition[1] in range(200, 240):
                 print('You have clicked play!')
@@ -25,6 +25,27 @@ class MouseEvents:
             if mousePosition[0] in range(560, 640) and mousePosition[1] in range(600, 640):
                 print('Going to next level...')
                 game.gameStage += 1
+            elif game.ballState == 'selecting speed':
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(104, 168):
+                    print("Speed = 6")
+                    gameBall.speed = 6
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(170, 234):
+                    print("Speed = 5")
+                    gameBall.speed = 5
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(236, 300):
+                    print("Speed = 4")
+                    gameBall.speed = 4
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(302, 366):
+                    print("Speed = 3")
+                    gameBall.speed = 3
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(368, 432):
+                    print("Speed = 2")
+                    gameBall.speed = 2
+                if mousePosition[0] in range(575, 625) and mousePosition[1] in range(434, 498):
+                    print("Speed = 1")
+                    gameBall.speed = 1
+                else:
+                    print("Invalid Selection")
             elif game.ballState == 'free':
                 if game.gameStage == 1:
                     if mousePosition[0] in range(113, 229) and mousePosition[1] in range(489, 532):
@@ -60,8 +81,6 @@ class MouseEvents:
                     pass
 
 
-
-    # def mouseMove(self):
 
 
 """

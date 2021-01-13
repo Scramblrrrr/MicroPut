@@ -29,6 +29,7 @@ class Game:
         self.ballstate = 'splash'
         self.gamestage = 1
         #blalblblbala
+        #something
 
 class State:
     def __init__(self):

@@ -28,6 +28,7 @@ class Game:
         self.gameMode = 'splash'
         self.ballState = 'splash'
         self.gameStage = 1
+        self.speedSelector = 'hidden'
         #blalblblbala
         #something
 
@@ -44,7 +45,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (165, 500)
         self.angle = math.radians(180+95)
-        self.speed = 5
+        self.speed = 0
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
         self.positionx = self.rect.center[0]
@@ -147,6 +148,7 @@ def play():
     currentMap = maps['Clouds']
     Hole = sprites['Hole']
     Ball = sprites['Golf Ball']
+    SpeedChart = maps['SpeedChart']
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'play':
         time.sleep(1/60)
@@ -171,21 +173,29 @@ def play():
             renderMap(mapFile=currentMap, row=0, column=0)
             renderMap(mapFile=currentStage, row=0, column=0)
             renderMap(mapFile=Hole, row=495, column=115)
+            renderMap(mapFile=SpeedChart, row=575, column=100)
+            bumper_group.draw(screen)
             mx, my = pygame.mouse.get_pos()
             if game.ballState == 'free':
                 renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
             pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
             splashScreen("Next", 570, 600)
             if game.ballState == 'placed':
-                gameBall.rect.center = (mx, my)
+                gameBall.positionx = mx+8
+                gameBall.positiony = my+8
+                game.ballState = 'selecting speed'
+            while game.ballState == 'selecting speed':
+                time.sleep(1/60)
+                # renderMap(mapFile=maps['SpeedChart'], row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+            if game.ballState == 'moving':
                 gameBall.update()
                 ball_group.draw(screen)
-                bumper_group.draw(screen)
                 pygame.display.flip()
                 bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
                 if bumper_hits:
                     gameBall.bumperhit(bumper1)
-            #pygame.display.flip()
         game.ballState = 'free'
         while game.gameStage == 2:
             currentStage = maps['Map2']

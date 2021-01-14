@@ -294,9 +294,9 @@ def play():
                 renderMap(mapFile=SpeedChart, row=575, column=100)
                 if gameBall.speed >= 1 and gameBall.speed <= 6:
                     game.ballState = 'moving'
+                    gameBall.angle = math.radians(angle.val)
                 pygame.display.flip()
             if game.ballState == 'moving':
-                gameBall.angle = math.radians(angle.val)
                 gameBall.update()
                 ball_group.draw(screen)
                 pygame.display.flip()

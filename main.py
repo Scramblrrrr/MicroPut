@@ -51,7 +51,6 @@ class Ball(pygame.sprite.Sprite):
         self.dy = math.sin(self.angle) * self.speed
         self.positionx = self.rect.center[0]
         self.positiony = self.rect.center[1]
-        #self.mask = pygame.mask.from_surface(self.image)
 
     def update(self):
         self.dx = math.cos(self.angle) * self.speed
@@ -63,8 +62,6 @@ class Ball(pygame.sprite.Sprite):
             self.speed = self.speed - 0.025
         else:
             self.speed = 0
-        #print(self.dx, self.dy)
-        #print(self.positionx,self.positiony)
 
     def bumperhit(self,bumper):
         alpha = math.degrees(self.angle) - bumper.angle
@@ -79,7 +76,7 @@ class Arrow(pygame.sprite.Sprite):
         self.image = sprites['Arrow']
         self.rect = self.image.get_rect()
         self.rect.center = (165, 500)
-        self.angle = math.radians(270)
+        self.angle = math.radians(0)
         self.positionx = self.rect.center[0]
         self.positiony = self.rect.center[1]
 
@@ -116,8 +113,8 @@ class Slider():
         # Static graphics - slider background #
         self.surf.fill((100, 100, 100))
         pygame.draw.rect(self.surf, GREY, [0, 0, 100, 50], 3)
-        pygame.draw.rect(self.surf, ORANGE, [10, 10, 80, 10], 0)
-        pygame.draw.rect(self.surf, WHITE, [10, 30, 80, 5], 0)
+        pygame.draw.rect(self.surf, CYAN, [10, 10, 80, 10], 0)
+        pygame.draw.rect(self.surf, BLACK, [10, 30, 80, 5], 0)
 
         self.surf.blit(self.txt_surf, self.txt_rect)  # this surface never changes
 
@@ -126,7 +123,7 @@ class Slider():
         self.button_surf.fill(TRANS)
         self.button_surf.set_colorkey(TRANS)
         pygame.draw.circle(self.button_surf, BLACK, (10, 10), 6, 0)
-        pygame.draw.circle(self.button_surf, ORANGE, (10, 10), 4, 0)
+        pygame.draw.circle(self.button_surf, CYAN, (10, 10), 4, 0)
 
     def draw(self):
         """ Combination of static and dynamic graphics in a copy of
@@ -279,7 +276,13 @@ def play():
                 ball_group.draw(screen)
                 game.ballState = 'selecting speed'
             while game.ballState == 'selecting speed':
-
+                # add arrow display here
+                arrow.positionx = (bdx)
+                arrow.positiony = (bdy)
+                arrow.rect.center = ((bdx + 28), (bdy - 8))
+                arrow_list.draw(screen)
+                arrow_list.update()
+                # end of arrow code
                 # attempting slider
                 time.sleep(1/60)
                 for event in pygame.event.get():
@@ -298,18 +301,14 @@ def play():
                     elif event.type == pygame.MOUSEBUTTONUP:
                         for s in slides:
                             s.hit = False
-                            arrow.image = pygame.transform.rotate(arrow.image, math.radians(angle.val))
+                            gameBall.angle = math.radians(angle.val)
+                            # arrow = pygame.sprite.RenderClear()
+                            # arrow.image = pygame.transform.rotate(arrow.image, angle.val)
                 for s in slides:
                     if s.hit:
                         s.move()
                 for s in slides:
                     s.draw()
-                # add arrow display here
-                arrow.positionx = bdx
-                arrow.positiony = bdy
-                arrow_list.draw(screen)
-                arrow_list.update()
-                # end of arrow code
                 pygame.display.flip()
                 print(angle.val)
                 #     end of slide attempt
@@ -317,7 +316,6 @@ def play():
                 renderMap(mapFile=SpeedChart, row=575, column=100)
                 if gameBall.speed >= 1 and gameBall.speed <= 6:
                     game.ballState = 'moving'
-                    gameBall.angle = math.radians(angle.val)
                 pygame.display.flip()
             if game.ballState == 'moving':
                 gameBall.update()

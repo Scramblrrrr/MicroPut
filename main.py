@@ -73,6 +73,17 @@ class Ball(pygame.sprite.Sprite):
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
 
+class Arrow(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = sprites['Arrow']
+        self.rect = self.image.get_rect()
+        self.rect.center = (165, 500)
+        self.angle = math.radians(270)
+        self.positionx = self.rect.center[0]
+        self.positiony = self.rect.center[1]
+
+
 # SLIDERS
 
 WHITE = (255, 255, 255)
@@ -183,6 +194,9 @@ def splashScreen(a, b, c):
 
 
 pygame.init()
+arrow = Arrow()
+arrow_list = pygame.sprite.Group()
+arrow_list.add(arrow)
 currentMap = maps['Homescreen']
 stage = Game()
 game = Game()
@@ -259,9 +273,11 @@ def play():
                 time.sleep(1/60)
                 gameBall.positionx = mx+8
                 gameBall.positiony = my+8
-                game.ballState = 'selecting speed'
-                gameBall.rect.center = (mx+8, my+8)
+                bdx = mx+8
+                bdy = my+8
+                gameBall.rect.center = (bdx, bdy)
                 ball_group.draw(screen)
+                game.ballState = 'selecting speed'
             while game.ballState == 'selecting speed':
 
                 # attempting slider
@@ -282,11 +298,18 @@ def play():
                     elif event.type == pygame.MOUSEBUTTONUP:
                         for s in slides:
                             s.hit = False
+                            arrow.image = pygame.transform.rotate(arrow.image, math.radians(angle.val))
                 for s in slides:
                     if s.hit:
                         s.move()
                 for s in slides:
                     s.draw()
+                # add arrow display here
+                arrow.positionx = bdx
+                arrow.positiony = bdy
+                arrow_list.draw(screen)
+                arrow_list.update()
+                # end of arrow code
                 pygame.display.flip()
                 print(angle.val)
                 #     end of slide attempt

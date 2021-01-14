@@ -1,0 +1,8 @@
+Once i finish all core game mechanics i will add a simple par counter and an if statement similar to
+
+if PreviousHS > CurrentScore:
+    f = open("High Scores,txt", "w")
+    f.clear
+    username = input("What is your name: ")
+    newHS = [usernmame:CurrentScore]
+    f.close

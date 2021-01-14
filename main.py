@@ -29,6 +29,7 @@ class Game:
         self.ballState = 'splash'
         self.gameStage = 1
         self.speedSelector = 'hidden'
+        self.par = 0
         #blalblblbala
         #something
 
@@ -184,7 +185,8 @@ def play():
                 gameBall.positionx = mx+8
                 gameBall.positiony = my+8
                 game.ballState = 'selecting speed'
-                print(game.ballState)
+                gameBall.rect.center = (mx+8, my+8)
+                ball_group.draw(screen)
             while game.ballState == 'selecting speed':
                 time.sleep(1/30)
                 renderMap(mapFile=SpeedChart, row=575, column=100)

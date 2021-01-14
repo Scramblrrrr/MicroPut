@@ -1,5 +1,5 @@
 
-# This is taken from https://stackoverflow.com/questions/28032822/how-to-insert-a-slider-in-pygame
+# This is taken from https://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 # with the purpose of using the UI and functionality of the slider and repurposing it
 
 import pygame, math, sys

@@ -143,7 +143,7 @@ class Slider():
         if self.val > self.maxi:
             self.val = self.maxi
 
-angle = Slider("Angle", 270, 90, 450, 455)
+angle = Slider("Angle", 270, 450, 90, 455)
 
 slides = [angle]
 
@@ -263,28 +263,40 @@ def play():
                 gameBall.rect.center = (mx+8, my+8)
                 ball_group.draw(screen)
             while game.ballState == 'selecting speed':
-                for s in slides:
-                    if s.hit:
-                        s.move()
-                    s.draw()
-                time.sleep(1/30)
-                renderMap(mapFile=SpeedChart, row=575, column=100)
-                if gameBall.speed >= 1 and gameBall.speed <= 6:
-                    game.ballState = 'moving'
-                pygame.display.flip()
+
+                # attempting slider
+                time.sleep(1/60)
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         print("Exiting...")
                         pygame.quit()
                         sys.exit()
-                    if event.type == pygame.MOUSEMOTION:
-                        mx, my = pygame.mouse.get_pos()
-                        print("x:", mx, "y:", my)
-                    if event.type == pygame.MOUSEBUTTONDOWN:
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
                         mx, my = pygame.mouse.get_pos()
                         print("x:", mx, "y:", my)
                         mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                        for s in slides:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        for s in slides:
+                            s.hit = False
+                for s in slides:
+                    if s.hit:
+                        s.move()
+                for s in slides:
+                    s.draw()
+                pygame.display.flip()
+                print(angle.val)
+                #     end of slide attempt
+
+                renderMap(mapFile=SpeedChart, row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+                pygame.display.flip()
             if game.ballState == 'moving':
+                gameBall.angle = math.radians(angle.val)
                 gameBall.update()
                 ball_group.draw(screen)
                 pygame.display.flip()
@@ -397,7 +409,7 @@ def play():
 
 # GAME:
 
-try:
+try:    # error handling
     f = open('High Score.txt', 'x')
     f.close()
 except FileExistsError:

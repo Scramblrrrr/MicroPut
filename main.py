@@ -79,16 +79,6 @@ class Ball(pygame.sprite.Sprite):
 
 gameBall = Ball()
 
-class Arrow(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = sprites['Arrow']
-        self.rect = self.image.get_rect()
-        self.rect.center = (165, 500)
-        self.angle = math.radians(0)
-        self.positionx = gameBall.rect.center[0]
-        self.positiony = gameBall.rect.center[1]
-
 
 # SLIDERS
 
@@ -209,9 +199,6 @@ def splashScreen(a, b, c):
 
 
 pygame.init()
-arrow = Arrow()
-arrow_list = pygame.sprite.Group()
-arrow_list.add(arrow)
 currentMap = maps['Homescreen']
 stage = Game()
 game = Game()
@@ -226,31 +213,32 @@ gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
 # walls
 
 # stage 1
-wall_group = pygame.sprite.Group()
+wall_group_V = pygame.sprite.Group()
+wall_group_H = pygame.sprite.Group()
 wall1 = Wall((90,540))
 wall1.image = pygame.transform.scale(wall1.image, (200, 1))
-wall1.angle = 90
-wall_group.add(wall1)
+wall1.angle = 0
+wall_group_H.add(wall1)
 wall2 = Wall((96,52))
 wall2.image = pygame.transform.scale(wall2.image, (1, 500))
-wall2.angle = 0
-wall_group.add(wall2)
+wall2.angle = 90
+wall_group_V.add(wall2)
 wall3 = Wall((280,198))
 wall3.image = pygame.transform.scale(wall3.image, (1, 350))
-wall3.angle = 0
-wall_group.add(wall3)
+wall3.angle = 90
+wall_group_V.add(wall3)
 wall4 = Wall((280,198))
 wall4.image = pygame.transform.scale(wall4.image, (300, 1))
-wall4.angle = 90
-wall_group.add(wall4)
+wall4.angle = 0
+wall_group_H.add(wall4)
 wall5 = Wall((571, 53))
 wall5.image = pygame.transform.scale(wall5.image, (1, 150))
-wall5.angle = 0
-wall_group.add(wall5)
+wall5.angle = 90
+wall_group_V.add(wall5)
 wall6 = Wall((82, 56))
 wall6.image = pygame.transform.scale(wall6.image, (500,1))
-wall5.angle = 90
-wall_group.add(wall6)
+wall6.angle = 0
+wall_group_H.add(wall6)
 
 
 
@@ -309,7 +297,8 @@ def play():
             renderMap(mapFile=currentStage, row=0, column=0)
             renderMap(mapFile=Hole, row=495, column=115)
             bumper_group.draw(screen)
-            wall_group.draw(screen)
+            wall_group_H.draw(screen)
+            wall_group_V.draw(screen)
             mx, my = pygame.mouse.get_pos()
             if game.ballState == 'free':
                 renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
@@ -325,13 +314,6 @@ def play():
                 ball_group.draw(screen)
                 game.ballState = 'selecting speed'
             while game.ballState == 'selecting speed':
-                # add arrow display here
-                arrow.positionx = (bdx)
-                arrow.positiony = (bdy)
-                arrow.rect.center = ((bdx + 28), (bdy - 8))
-                arrow_list.draw(screen)
-                arrow_list.update()
-                # end of arrow code
                 # attempting slider
                 time.sleep(1/60)
                 for event in pygame.event.get():
@@ -351,8 +333,18 @@ def play():
                         for s in slides:
                             s.hit = False
                             gameBall.angle = math.radians(angle.val)
-                            # arrow = pygame.sprite.RenderClear()
-                            arrow.image = pygame.transform.rotate(arrow.image, angle.val)
+                            renderMap(mapFile=currentMap, row=0, column=0)
+                            renderMap(mapFile=currentStage, row=0, column=0)
+                            renderMap(mapFile=Hole, row=495, column=115)
+                            bumper_group.draw(screen)
+                            wall_group_H.draw(screen)
+                            wall_group_V.draw(screen)
+                            ball_group.draw(screen)
+                            pygame.draw.line(surface=screen,
+                                             color=(122,165,221),
+                                             start_pos=gameBall.rect.center,
+                                             end_pos= (gameBall.rect.center[0] + 100 * math.cos(gameBall.angle), gameBall.rect.center[1]+100*math.sin(gameBall.angle)),
+                                             width=5)
                 for s in slides:
                     if s.hit:
                         s.move()
@@ -360,8 +352,7 @@ def play():
                     s.draw()
                 pygame.display.flip()
                 print(angle.val)
-                #     end of slide attempt
-
+                #     end of slider attempt
                 renderMap(mapFile=SpeedChart, row=575, column=100)
                 if gameBall.speed >= 1 and gameBall.speed <= 6:
                     game.ballState = 'moving'
@@ -371,12 +362,16 @@ def play():
                 ball_group.draw(screen)
                 pygame.display.flip()
                 bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
-                for wall in wall_group:
-                    wall_hits = pygame.sprite.spritecollide(gameBall,wall_group, False, pygame.sprite.collide_mask)
-                    if wall_hits:
-                        gameBall.wallhit(wall)
-                    if bumper_hits:
-                        gameBall.bumperhit(bumper1)
+                if bumper_hits:
+                    gameBall.bumperhit(bumper1)
+                for wall in wall_group_V:
+                    wall_hits_V = pygame.sprite.spritecollide(gameBall,wall_group_V, False, pygame.sprite.collide_mask)
+                    if wall_hits_V:
+                        gameBall.wallhit(wall1)
+                for wall in wall_group_H:
+                    wall_hits_H = pygame.sprite.spritecollide(gameBall,wall_group_H, False, pygame.sprite.collide_mask)
+                    if wall_hits_H:
+                        gameBall.wallhit(wall2)
             #     if ballsprite center is over black (hole), ball disappears, score
             if gameBall.speed == 0:
                 print("Stopped!")

@@ -70,6 +70,15 @@ class Ball(pygame.sprite.Sprite):
         self.dx = math.cos(self.angle) * self.speed
         self.dy = math.sin(self.angle) * self.speed
 
+    def wallhit(self,wall):
+        alpha = math.degrees(self.angle) - wall.angle
+        bounceangle = 180 - 2*alpha + math.degrees(self.angle)
+        self.angle = math.radians(bounceangle)
+        self.dx = math.cos(self.angle) * self.speed
+        self.dy = math.sin(self.angle) * self.speed
+
+gameBall = Ball()
+
 class Arrow(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -77,8 +86,8 @@ class Arrow(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (165, 500)
         self.angle = math.radians(0)
-        self.positionx = self.rect.center[0]
-        self.positiony = self.rect.center[1]
+        self.positionx = gameBall.rect.center[0]
+        self.positiony = gameBall.rect.center[1]
 
 
 # SLIDERS
@@ -170,6 +179,15 @@ class Bumper(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = center_pixel
 
+class Wall(pygame.sprite.Sprite):
+    def __init__(self,center_pixel):
+        super().__init__()
+        self.image = sprites['Wall']
+        self.angle = 90
+        self.rect = self.image.get_rect()
+        self.rect.center = center_pixel
+
+
 
 def renderMap(mapFile, row, column):
     screen.blit(mapFile, (row, column))
@@ -198,13 +216,43 @@ currentMap = maps['Homescreen']
 stage = Game()
 game = Game()
 state = Game()
-gameBall = Ball()
 ball_group = pygame.sprite.Group()
 ball_group.add(gameBall)
 bumper1 = Bumper((80 + (141/2),54 + (141/2)))
 bumper_group = pygame.sprite.Group()
 bumper_group.add(bumper1)
 gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
+
+# walls
+
+# stage 1
+wall_group = pygame.sprite.Group()
+wall1 = Wall((90,540))
+wall1.image = pygame.transform.scale(wall1.image, (200, 1))
+wall1.angle = 90
+wall_group.add(wall1)
+wall2 = Wall((96,52))
+wall2.image = pygame.transform.scale(wall2.image, (1, 500))
+wall2.angle = 0
+wall_group.add(wall2)
+wall3 = Wall((280,198))
+wall3.image = pygame.transform.scale(wall3.image, (1, 350))
+wall3.angle = 0
+wall_group.add(wall3)
+wall4 = Wall((280,198))
+wall4.image = pygame.transform.scale(wall4.image, (300, 1))
+wall4.angle = 90
+wall_group.add(wall4)
+wall5 = Wall((571, 53))
+wall5.image = pygame.transform.scale(wall5.image, (1, 150))
+wall5.angle = 0
+wall_group.add(wall5)
+wall6 = Wall((82, 56))
+wall6.image = pygame.transform.scale(wall6.image, (500,1))
+wall5.angle = 90
+wall_group.add(wall6)
+
+
 
 def main():
     mouseEvents = mouse_events.MouseEvents(screen)
@@ -240,7 +288,7 @@ def play():
     while game.gameMode == 'play':
         time.sleep(1/60)
         mixer.music.load('./sounds/Elsie.mp3')
-        mixer.music.play(-1)
+        # mixer.music.play(-1)
         game.ballState = 'free'
         while game.gameStage == 1:
             time.sleep(1/60)
@@ -261,6 +309,7 @@ def play():
             renderMap(mapFile=currentStage, row=0, column=0)
             renderMap(mapFile=Hole, row=495, column=115)
             bumper_group.draw(screen)
+            wall_group.draw(screen)
             mx, my = pygame.mouse.get_pos()
             if game.ballState == 'free':
                 renderMap(mapFile=Ball, row=(mx-16), column=(my-16))
@@ -322,8 +371,12 @@ def play():
                 ball_group.draw(screen)
                 pygame.display.flip()
                 bumper_hits = pygame.sprite.spritecollide(gameBall,bumper_group, False, pygame.sprite.collide_mask)
-                if bumper_hits:
-                    gameBall.bumperhit(bumper1)
+                for wall in wall_group:
+                    wall_hits = pygame.sprite.spritecollide(gameBall,wall_group, False, pygame.sprite.collide_mask)
+                    if wall_hits:
+                        gameBall.wallhit(wall)
+                    if bumper_hits:
+                        gameBall.bumperhit(bumper1)
             #     if ballsprite center is over black (hole), ball disappears, score
             if gameBall.speed == 0:
                 print("Stopped!")

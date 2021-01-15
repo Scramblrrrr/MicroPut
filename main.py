@@ -304,7 +304,6 @@ def play():
                             gameBall.angle = math.radians(angle.val)
                             # arrow = pygame.sprite.RenderClear()
                             arrow.image = pygame.transform.rotate(arrow.image, angle.val)
-
                 for s in slides:
                     if s.hit:
                         s.move()

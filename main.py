@@ -201,7 +201,7 @@ state = Game()
 gameBall = Ball()
 ball_group = pygame.sprite.Group()
 ball_group.add(gameBall)
-bumper1 = Bumper((82 + (141/2),56 + (141/2)))
+bumper1 = Bumper((80 + (141/2),54 + (141/2)))
 bumper_group = pygame.sprite.Group()
 bumper_group.add(bumper1)
 gameBall.image = pygame.transform.scale(gameBall.image, (16, 16))
@@ -303,7 +303,7 @@ def play():
                             s.hit = False
                             gameBall.angle = math.radians(angle.val)
                             # arrow = pygame.sprite.RenderClear()
-                            # arrow.image = pygame.transform.rotate(arrow.image, angle.val)
+                            arrow.image = pygame.transform.rotate(arrow.image, angle.val)
                 for s in slides:
                     if s.hit:
                         s.move()

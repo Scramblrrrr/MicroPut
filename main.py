@@ -379,7 +379,7 @@ def play():
                     game.ballState = 'score'
             if game.ballState == 'score':
                 renderMap(mapFile=Score, row=300, column=300)
-                display_par = "Par: {}".format(game.par)
+                display_par = "Swings: {}".format(game.par)
                 splashScreen(display_par, 305, 335)
                 pygame.display.flip()
                 print('Good Job')
@@ -611,7 +611,7 @@ def play():
                     game.ballState = 'score'
             if game.ballState == 'score':
                 renderMap(mapFile=Score, row=300, column=300)
-                display_par = "Par: {}".format(game.par)
+                display_par = "Swings: {}".format(game.par)
                 splashScreen(display_par, 305, 335)
                 pygame.display.flip()
                 print('Good Job')

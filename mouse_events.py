@@ -25,7 +25,7 @@ class MouseEvents:
             if mousePosition[0] in range(560, 640) and mousePosition[1] in range(600, 640):
                 print('Going to next level...')
                 game.gameStage += 1
-            elif game.ballState == 'selecting speed':
+            elif game.ballState == 'selecting speed' or game.ballState == 'stopped':
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(104, 168):
                     print("Speed = 6")
                     gameBall.speed = 6

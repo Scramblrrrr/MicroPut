@@ -9,5 +9,6 @@ maps = {
     'Map3': pygame.image.load('./textures/Map3.png'),
     'Map4': pygame.image.load('./textures/Map4.png'),
     'Map5': pygame.image.load('./textures/Map5.png'),
-    'SpeedChart': pygame.image.load('./textures/Speed.png')
+    'SpeedChart': pygame.image.load('./textures/Speed.png'),
+    'Score': pygame.image.load('./textures/SCORE.png')
 }

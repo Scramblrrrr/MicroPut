@@ -372,9 +372,25 @@ def play():
                     wall_hits_H = pygame.sprite.spritecollide(gameBall,wall_group_H, False, pygame.sprite.collide_mask)
                     if wall_hits_H:
                         gameBall.wallhit(wall2)
+                if gameBall.rect.center[0] in range(510,525) and gameBall.rect.center[1] in range(120,150):
+                    gameBall.speed = 0
+                    print("SCORE")
             #     if ballsprite center is over black (hole), ball disappears, score
             if gameBall.speed == 0:
                 print("Stopped!")
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    if event.type == pygame.MOUSEMOTION:
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+
                 # create a sequence that allows the player to change direction and speed again and again until they get the ball in the whole while keeping score (amount of "swings")
         game.ballState = 'free'
         while game.gameStage == 2:

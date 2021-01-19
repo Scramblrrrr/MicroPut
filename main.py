@@ -277,7 +277,7 @@ def play():
     while game.gameMode == 'play':
         time.sleep(1/60)
         mixer.music.load('./sounds/Elsie.mp3')
-        # mixer.music.play(-1)
+        mixer.music.play(-1)
         game.ballState = 'free'
         while game.gameStage == 1:
             time.sleep(1/60)

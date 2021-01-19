@@ -593,17 +593,18 @@ def play():
                 gameBall.update()
                 ball_group.draw(screen)
                 pygame.display.flip()
-                # bumper_hits = pygame.sprite.spritecollide(gameBall, bumper_group, False, pygame.sprite.collide_mask)
-                # if bumper_hits:
-                #     gameBall.bumperhit(bumper1)
-                for i in wall_group_V2:
-                    wall_hits_V2 = pygame.sprite.spritecollide(gameBall, wall_group_V2, False,pygame.sprite.collide_mask)
+                #
+
+                for wall in wall_group_V:
+                    wall_hits_V2 = pygame.sprite.spritecollide(gameBall, wall_group_V2, False, pygame.sprite.collide_mask)
                     if wall_hits_V2:
                         gameBall.wallhit(wall21)
-                for i in wall_group_H2:
-                    wall_hits_H2 = pygame.sprite.spritecollide(gameBall, wall_group_H2, False,pygame.sprite.collide_mask)
+                for wall in wall_group_H:
+                    wall_hits_H2 = pygame.sprite.spritecollide(gameBall, wall_group_H2, False, pygame.sprite.collide_mask)
                     if wall_hits_H2:
                         gameBall.wallhit(wall22)
+
+                #
                 if gameBall.rect.center[0] in range(131, 156) and gameBall.rect.center[1] in range(87, 111):
                     gameBall.speed = 0
                     print("SCORE")

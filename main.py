@@ -695,11 +695,11 @@ def play():
         wall36 = Wall((191, 159))
         wall36.image = pygame.transform.scale(wall36.image, (259, 1))
         wall36.angle = 0
-        wall_group_V3.add(wall36)
+        wall_group_H3.add(wall36)
         wall37 = Wall((191, 441))
         wall37.image = pygame.transform.scale(wall37.image, (259, 1))
         wall37.angle = 0
-        wall_group_V3.add(wall37)
+        wall_group_H3.add(wall37)
         wall38 = Wall((191, 159))
         wall38.image = pygame.transform.scale(wall38.image, (1, 283))
         wall38.angle = 90
@@ -722,6 +722,7 @@ def play():
         wall_group_H3.add(wall312)
         while game.gameStage == 3:
             currentStage = maps['Map3']
+            time.sleep(1 / 60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print("Exiting...")
@@ -814,7 +815,7 @@ def play():
                         gameBall.wallhit(wall32)
 
                 #
-                if gameBall.rect.center[0] in range(131, 156) and gameBall.rect.center[1] in range(87, 111):
+                if gameBall.rect.center[0] in range(101, 119) and gameBall.rect.center[1] in range(493, 516):
                     gameBall.speed = 0
                     print("SCORE")
                     game.ballState = 'score'

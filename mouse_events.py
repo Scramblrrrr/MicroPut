@@ -29,21 +29,27 @@ class MouseEvents:
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(104, 168):
                     print("Speed = 6")
                     gameBall.speed = 6
+                    game.par += 1
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(170, 234):
                     print("Speed = 5")
                     gameBall.speed = 5
+                    game.par += 1
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(236, 300):
                     print("Speed = 4")
                     gameBall.speed = 4
+                    game.par += 1
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(302, 366):
                     print("Speed = 3")
                     gameBall.speed = 3
+                    game.par += 1
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(368, 432):
                     print("Speed = 2")
                     gameBall.speed = 2
+                    game.par += 1
                 if mousePosition[0] in range(575, 625) and mousePosition[1] in range(434, 498):
                     print("Speed = 1")
                     gameBall.speed = 1
+                    game.par += 1
                 else:
                     print("Invalid Selection")
             elif game.ballState == 'free':

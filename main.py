@@ -381,6 +381,7 @@ def play():
                 renderMap(mapFile=Score, row=300, column=300)
                 pygame.display.flip()
                 print('Good Job')
+                print('Par: ',game.par)
                 time.sleep(1.5)
                 game.gameStage += 1
                 game.ballState = 'free'

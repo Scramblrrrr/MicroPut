@@ -471,6 +471,47 @@ def play():
         wall22.image = pygame.transform.scale(wall22.image, (1, 465))
         wall22.angle = 90
         wall_group_V2.add(wall22)
+        wall23 = Wall((383, 75))
+        wall23.image = pygame.transform.scale(wall23.image, (1, 187))
+        wall23.angle = 90
+        wall_group_V2.add(wall23)
+        wall24 = Wall((230, 261))
+        wall24.image = pygame.transform.scale(wall24.image, (153, 1))
+        wall24.angle = 0
+        wall_group_H2.add(wall24)
+        wall25 = Wall((76, 537))
+        wall25.image = pygame.transform.scale(wall25.image, (470, 1))
+        wall25.angle = 0
+        wall_group_H2.add(wall25)
+        wall26 = Wall((385,287))
+        wall26.image = pygame.transform.scale(wall26.image, (1, 169))
+        wall26.angle = 90
+        wall_group_V2.add(wall26)
+        wall27 = Wall((230,287))
+        wall27.image = pygame.transform.scale(wall27.image, (155, 1))
+        wall27.angle = 0
+        wall_group_H2.add(wall27)
+        wall28 = Wall((230, 455))
+        wall28.image = pygame.transform.scale(wall28.image, (155, 1))
+        wall28.angle = 0
+        wall_group_H2.add(wall28)
+        wall29 = Wall((231,70))
+        wall29.image = pygame.transform.scale(wall29.image, (1, 191))
+        wall29.angle = 90
+        wall_group_V2.add(wall29)
+        wall210 = Wall((231, 287))
+        wall210.image = pygame.transform.scale(wall210.image, (1, 169))
+        wall210.angle =90
+        wall_group_V2.add(wall210)
+        wall211 = Wall((75,72))
+        wall211.image = pygame.transform.scale(wall211.image, (160, 1))
+        wall211.angle = 0
+        wall_group_H2.add(wall211)
+        wall212 = Wall((76, 72))
+        wall212.image = pygame.transform.scale(wall212.image, (1, 465))
+        wall212.angle = 90
+        wall_group_V2.add(wall212)
+
         # ^^^^^^^^^^
         while game.gameStage == 2:
             currentStage = maps['Map2']
@@ -552,14 +593,14 @@ def play():
                 gameBall.update()
                 ball_group.draw(screen)
                 pygame.display.flip()
-                bumper_hits = pygame.sprite.spritecollide(gameBall, bumper_group, False, pygame.sprite.collide_mask)
-                if bumper_hits:
-                    gameBall.bumperhit(bumper1)
-                for wall in wall_group_V2:
+                # bumper_hits = pygame.sprite.spritecollide(gameBall, bumper_group, False, pygame.sprite.collide_mask)
+                # if bumper_hits:
+                #     gameBall.bumperhit(bumper1)
+                for i in wall_group_V2:
                     wall_hits_V2 = pygame.sprite.spritecollide(gameBall, wall_group_V2, False,pygame.sprite.collide_mask)
                     if wall_hits_V2:
                         gameBall.wallhit(wall21)
-                for wall in wall_group_H2:
+                for i in wall_group_H2:
                     wall_hits_H2 = pygame.sprite.spritecollide(gameBall, wall_group_H2, False,pygame.sprite.collide_mask)
                     if wall_hits_H2:
                         gameBall.wallhit(wall22)
@@ -618,7 +659,7 @@ def play():
                             gameBall.angle = math.radians(angle.val)
                             renderMap(mapFile=currentMap, row=0, column=0)
                             renderMap(mapFile=currentStage, row=0, column=0)
-                            renderMap(mapFile=Hole, row=495, column=115)
+                            renderMap(mapFile=Hole, row=125, column=80)
                             # bumper_group.draw(screen)
                             wall_group_H2.draw(screen)
                             wall_group_V2.draw(screen)

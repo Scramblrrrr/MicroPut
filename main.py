@@ -707,7 +707,7 @@ def play():
         wall39 = Wall((70, 60))
         wall39.image = pygame.transform.scale(wall39.image, (1, 471))
         wall39.angle = 90
-        wall_group_H3.add(wall39)
+        wall_group_V3.add(wall39)
         wall310 = Wall((70, 530))
         wall310.image = pygame.transform.scale(wall310.image, (120, 1))
         wall310.angle = 0
@@ -715,7 +715,7 @@ def play():
         wall311 = Wall((190, 506))
         wall311.image = pygame.transform.scale(wall311.image, (1, 24))
         wall311.angle = 90
-        wall_group_H3.add(wall311)
+        wall_group_V3.add(wall311)
         wall312 = Wall((190, 506))
         wall312.image = pygame.transform.scale(wall312.image, (332, 1))
         wall312.angle = 0

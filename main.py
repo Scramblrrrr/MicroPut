@@ -18,7 +18,10 @@ pygame.display.set_caption('Micro Putt')
 game_font = pygame.font.SysFont('comicsansms', 24)
 icon = sprites['Golf Ball']
 pygame.display.set_icon(icon)
+# game environment set
 
+
+# creating game class to hold global variables
 class Game:
     """
     Game class handles all the permanent game stats such as score, game mode, current maps
@@ -35,6 +38,7 @@ class Game:
 
 # mx, my = pygame.mouse.get_pos()
 
+# creating ball class to hold values and functions related to the game ball
 class Ball(pygame.sprite.Sprite):
     """
     Attributes: directionX, directionY, initialAngle, currentAngle, speed, image
@@ -156,6 +160,8 @@ slides = [angle]
 
 # END OF SLIDERS
 
+
+# creating class to hold all bumper functions and variables
 class Bumper(pygame.sprite.Sprite):
 
     def __init__(self,center_pixel):
@@ -169,6 +175,7 @@ class Bumper(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = center_pixel
 
+# creating class to hold all wall functions and variables
 class Wall(pygame.sprite.Sprite):
     def __init__(self,center_pixel):
         super().__init__()
@@ -178,26 +185,18 @@ class Wall(pygame.sprite.Sprite):
         self.rect.center = center_pixel
 
 
-
+# defining render map so i can use it as a function (makes it more simple)
 def renderMap(mapFile, row, column):
     screen.blit(mapFile, (row, column))
 
-
+# defining splash screen that takes values a b and c to control what word to display, and where to do so
 def splashScreen(a, b, c):
-
-    #drawing text:
-    #font.render()
-    #blit()
-    #render()
-    #text = a string literal object
-    #antialias = takes an 8 bit image and "smooths is" by remapping it to a 24 bit image
-    #color
-    #background
     word = game_font.render(a, None, (0, 0, 0))
     screen.blit(word, (b,c))
     pygame.display.flip()
 
 
+# beginning to prepare to run the game
 pygame.init()
 currentMap = maps['Homescreen']
 stage = Game()
@@ -241,7 +240,7 @@ wall6.angle = 0
 wall_group_H.add(wall6)
 
 
-
+# splashscreen
 def main():
     mouseEvents = mouse_events.MouseEvents(screen)
     while game.gameMode == 'splash':
@@ -267,6 +266,7 @@ def main():
         splashScreen("Load", 350, 305)
         pygame.display.flip()
 
+# controls all 5 stages and allows for score keeping and stage switching
 def play():
     currentMap = maps['Clouds']
     Hole = sprites['Hole']
@@ -1318,27 +1318,3 @@ while True:
         play()
     else:
         main()
-
-
-
-
-
-# on launch show clouds background
-# show 3 buttons ontop of background
-#     1. Play
-#         will prompt the game to start
-#     2. High-Scores
-#         will display top 5 scores with 4 digit names
-#     3. Exit
-#         will exit the program
-#
-# once play option is selected, prompt map1 to appear and allow the user to begin game
-# once game has begun, allow player to drop their ball anywhere withen the dark green oval
-# once ball is dropped allow player to aim and adjust ball speed
-# once an imput is take from the mouse, make the ball move accordingly
-# ball should have direction and speed reflected after making contact with a brown surface
-# ball should disappear and play sound once it makes contact with black hole
-# after this first stage it should repeat the process but change the map
-# this should repeat untill all maps are completed
-# user's score should be compared to previous scores and if it is in top 5 players, allow player to add their score and 4 digit name
-#

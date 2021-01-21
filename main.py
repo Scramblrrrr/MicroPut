@@ -1312,6 +1312,7 @@ f = open('High Score.txt', 'r')
 PreviousHS = f.readline()
 f.close()
 print("PreviousHS: ", PreviousHS)
+print('Made by Joey')
 main()
 while True:
     if game.gameMode == 'play':

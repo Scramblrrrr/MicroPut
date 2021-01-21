@@ -373,7 +373,7 @@ def play():
                     wall_hits_H = pygame.sprite.spritecollide(gameBall,wall_group_H, False, pygame.sprite.collide_mask)
                     if wall_hits_H:
                         gameBall.wallhit(wall2)
-                if gameBall.rect.center[0] in range(510,525) and gameBall.rect.center[1] in range(120,150):
+                if gameBall.rect.center[0] in range(510,525) and gameBall.rect.center[1] in range(130,160):
                     gameBall.speed = 0
                     print("SCORE")
                     game.ballState = 'score'
@@ -595,7 +595,7 @@ def play():
                         gameBall.wallhit(wall22)
 
                 #
-                if gameBall.rect.center[0] in range(131, 156) and gameBall.rect.center[1] in range(87, 111):
+                if gameBall.rect.center[0] in range(131, 156) and gameBall.rect.center[1] in range(97, 121):
                     gameBall.speed = 0
                     print("SCORE")
                     game.ballState = 'score'
@@ -815,7 +815,7 @@ def play():
                         gameBall.wallhit(wall32)
 
                 #
-                if gameBall.rect.center[0] in range(101, 119) and gameBall.rect.center[1] in range(493, 516):
+                if gameBall.rect.center[0] in range(101, 119) and gameBall.rect.center[1] in range(503, 526):
                     gameBall.speed = 0
                     print("SCORE")
                     game.ballState = 'score'
@@ -893,8 +893,43 @@ def play():
                 pygame.display.flip()
                 # ^^^ code allowing user to re-swing
         game.ballState = 'free'
+        wall_group_V4 = pygame.sprite.Group()
+        wall_group_H4 = pygame.sprite.Group()
+        wall41 = Wall((217, 44))
+        wall41.image = pygame.transform.scale(wall41.image, (154, 1))
+        wall41.angle = 0
+        wall_group_H4.add(wall41)
+        wall42 = Wall((371, 44))
+        wall42.image = pygame.transform.scale(wall42.image, (1, 504))
+        wall42.angle = 90
+        wall_group_V4.add(wall42)
+        wall43 = Wall((217, 546))
+        wall43.image = pygame.transform.scale(wall43.image, (154, 1))
+        wall43.angle = 0
+        wall_group_H4.add(wall43)
+        wall44 = Wall((217, 44))
+        wall44.image = pygame.transform.scale(wall44.image, (1, 504))
+        wall44.angle = 90
+        wall_group_V4.add(wall44)
+        wall45 = Wall((262, 292))
+        wall45.image = pygame.transform.scale(wall45.image, (59, 1))
+        wall45.angle = 0
+        wall_group_H4.add(wall45)
+        wall46 = Wall((262, 311))
+        wall46.image = pygame.transform.scale(wall46.image, (59, 1))
+        wall46.angle = 0
+        wall_group_H4.add(wall46)
+        wall47 = Wall((262, 292))
+        wall47.image = pygame.transform.scale(wall47.image, (1, 19))
+        wall47.angle = 90
+        wall_group_V4.add(wall47)
+        wall48 = Wall((320, 292))
+        wall48.image = pygame.transform.scale(wall48.image, (1, 19))
+        wall48.angle = 90
+        wall_group_V4.add(wall48)
         while game.gameStage == 4:
             currentStage = maps['Map4']
+            time.sleep(1 / 60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print("Exiting...")
@@ -907,18 +942,193 @@ def play():
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
                     mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
-                renderMap(mapFile=currentMap, row=0, column=0)
-                renderMap(mapFile=currentStage, row=0, column=0)
-                renderMap(mapFile=Hole, row=265, column=65)
-                mx, my = pygame.mouse.get_pos()
-                if game.ballState == 'free':
-                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
-                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
-                splashScreen("Next", 570, 600)
+            renderMap(mapFile=currentMap, row=0, column=0)
+            renderMap(mapFile=currentStage, row=0, column=0)
+            renderMap(mapFile=Hole, row=265, column=65)
+            wall_group_H4.draw(screen)
+            wall_group_V4.draw(screen)
+            mx, my = pygame.mouse.get_pos()
+            if game.ballState == 'free':
+                renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
+            pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+            splashScreen("Next", 570, 600)
+            pygame.display.flip()
+            if game.ballState == 'placed':
+                time.sleep(1 / 60)
+                gameBall.positionx = mx + 8
+                gameBall.positiony = my + 8
+                bdx = mx + 8
+                bdy = my + 8
+                gameBall.rect.center = (bdx, bdy)
+                ball_group.draw(screen)
+                game.ballState = 'selecting speed'
+            while game.ballState == 'selecting speed':
+                # attempting slider
+                time.sleep(1 / 60)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                        for s in slides:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        for s in slides:
+                            s.hit = False
+                            gameBall.angle = math.radians(angle.val)
+                            renderMap(mapFile=currentMap, row=0, column=0)
+                            renderMap(mapFile=currentStage, row=0, column=0)
+                            renderMap(mapFile=Hole, row=265, column=65)
+                            wall_group_H4.draw(screen)
+                            wall_group_V4.draw(screen)
+                            ball_group.draw(screen)
+                            pygame.draw.line(surface=screen, color=(122, 165, 221), start_pos=gameBall.rect.center,
+                                             end_pos=(gameBall.rect.center[0] + 100 * math.cos(gameBall.angle),
+                                                      gameBall.rect.center[1] + 100 * math.sin(gameBall.angle)),
+                                             width=5)
+                for s in slides:
+                    if s.hit:
+                        s.move()
+                for s in slides:
+                    s.draw()
                 pygame.display.flip()
+                print(angle.val)
+                #     end of slider attempt
+                renderMap(mapFile=SpeedChart, row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+                pygame.display.flip()
+            if game.ballState == 'moving':
+                gameBall.update()
+                ball_group.draw(screen)
+                pygame.display.flip()
+                #
+
+                for wall in wall_group_V:
+                    wall_hits_V4 = pygame.sprite.spritecollide(gameBall, wall_group_V4, False,
+                                                               pygame.sprite.collide_mask)
+                    if wall_hits_V4:
+                        gameBall.wallhit(wall41)
+                for wall in wall_group_H:
+                    wall_hits_H4 = pygame.sprite.spritecollide(gameBall, wall_group_H4, False,
+                                                               pygame.sprite.collide_mask)
+                    if wall_hits_H4:
+                        gameBall.wallhit(wall42)
+
+                #
+                if gameBall.rect.center[0] in range(270, 297) and gameBall.rect.center[1] in range(81, 108):
+                    gameBall.speed = 0
+                    print("SCORE")
+                    game.ballState = 'score'
+            if game.ballState == 'score':
+                renderMap(mapFile=Score, row=300, column=300)
+                display_par = "Swings: {}".format(game.par)
+                splashScreen(display_par, 305, 335)
+                pygame.display.flip()
+                print('Good Job')
+                print('Par: ', game.par)
+                time.sleep(1.5)
+                game.gameStage += 1
+                game.ballState = 'free'
+                gameBall.speed = 7
+            #     if ballsprite center is over black (hole), ball disappears, score
+            if gameBall.speed == 0:
+                if game.ballState != 'score':
+                    print("Stopped!")
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            print("Exiting...")
+                            pygame.quit()
+                            sys.exit()
+                        if event.type == pygame.MOUSEMOTION:
+                            mx, my = pygame.mouse.get_pos()
+                            print("x:", mx, "y:", my)
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mx, my = pygame.mouse.get_pos()
+                            print("x:", mx, "y:", my)
+                            mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                    game.ballState = 'stopped'
+                    gameBall.speed = 7
+            while game.ballState == 'stopped':
+                # attempting slider
+                time.sleep(1 / 60)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                        for s in slides:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        for s in slides:
+                            s.hit = False
+                            gameBall.angle = math.radians(angle.val)
+                            renderMap(mapFile=currentMap, row=0, column=0)
+                            renderMap(mapFile=currentStage, row=0, column=0)
+                            renderMap(mapFile=Hole, row=265, column=65)
+                            # bumper_group.draw(screen)
+                            wall_group_H4.draw(screen)
+                            wall_group_V4.draw(screen)
+                            ball_group.draw(screen)
+                            pygame.draw.line(surface=screen, color=(122, 165, 221), start_pos=gameBall.rect.center,
+                                             end_pos=(gameBall.rect.center[0] + 100 * math.cos(gameBall.angle),
+                                                      gameBall.rect.center[1] + 100 * math.sin(gameBall.angle)),
+                                             width=5)
+                for s in slides:
+                    if s.hit:
+                        s.move()
+                for s in slides:
+                    s.draw()
+                pygame.display.flip()
+                print(angle.val)
+                #     end of slider attempt
+                renderMap(mapFile=SpeedChart, row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+                pygame.display.flip()
+                # ^^^ code allowing user to re-swing
         game.ballState = 'free'
+        wall_group_V5 = pygame.sprite.Group()
+        wall_group_H5 = pygame.sprite.Group()
+        wall51 = Wall((56, 38))
+        wall51.image = pygame.transform.scale(wall51.image, (515, 1))
+        wall51.angle = 0
+        wall_group_H5.add(wall51)
+        wall52 = Wall((570, 38))
+        wall52.image = pygame.transform.scale(wall52.image, (1, 97))
+        wall52.angle = 90
+        wall_group_V5.add(wall52)
+        wall53 = Wall((56, 38))
+        wall53.image = pygame.transform.scale(wall53.image, (1, 544))
+        wall53.angle = 90
+        wall_group_V5.add(wall53)
+        wall54 = Wall((208, 134))
+        wall54.image = pygame.transform.scale(wall54.image, (1, 447))
+        wall54.angle = 90
+        wall_group_V5.add(wall54)
+        wall55 = Wall((208, 134))
+        wall55.image = pygame.transform.scale(wall55.image, (362, 1))
+        wall55.angle = 0
+        wall_group_H5.add(wall55)
+        wall56 = Wall((56, 579))
+        wall56.image = pygame.transform.scale(wall56.image, (152, 1))
+        wall56.angle = 0
+        wall_group_H5.add(wall56)
         while game.gameStage == 5:
             currentStage = maps['Map5']
+            time.sleep(1 / 60)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print("Exiting...")
@@ -931,18 +1141,165 @@ def play():
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
                     mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
-                renderMap(mapFile=currentMap, row=0, column=0)
-                renderMap(mapFile=currentStage, row=0, column=0)
-                renderMap(mapFile=Hole, row=90, column=515)
-                mx, my = pygame.mouse.get_pos()
-                if game.ballState == 'free':
-                    renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
-                pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
-                splashScreen("Next", 570, 600)
-                if game.gameStage == 6:
-                    game.gameStage = 1
-                    game.gameMode = 'splash'
+            renderMap(mapFile=currentMap, row=0, column=0)
+            renderMap(mapFile=currentStage, row=0, column=0)
+            renderMap(mapFile=Hole, row=90, column=515)
+            mx, my = pygame.mouse.get_pos()
+            wall_group_H5.draw(screen)
+            wall_group_V5.draw(screen)
+            if game.ballState == 'free':
+                renderMap(mapFile=Ball, row=(mx - 16), column=(my - 16))
+            pygame.draw.rect(surface=currentMap, color=(82, 82, 77), rect=((560, 600), (80, 40)))
+            splashScreen("Next", 570, 600)
+            pygame.display.flip()
+            if game.ballState == 'placed':
+                time.sleep(1 / 60)
+                gameBall.positionx = mx + 8
+                gameBall.positiony = my + 8
+                bdx = mx + 8
+                bdy = my + 8
+                gameBall.rect.center = (bdx, bdy)
+                ball_group.draw(screen)
+                game.ballState = 'selecting speed'
+            while game.ballState == 'selecting speed':
+                # attempting slider
+                time.sleep(1 / 60)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                        for s in slides:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        for s in slides:
+                            s.hit = False
+                            gameBall.angle = math.radians(angle.val)
+                            renderMap(mapFile=currentMap, row=0, column=0)
+                            renderMap(mapFile=currentStage, row=0, column=0)
+                            renderMap(mapFile=Hole, row=90, column=515)
+                            wall_group_H5.draw(screen)
+                            wall_group_V5.draw(screen)
+                            ball_group.draw(screen)
+                            pygame.draw.line(surface=screen, color=(122, 165, 221), start_pos=gameBall.rect.center,
+                                             end_pos=(gameBall.rect.center[0] + 100 * math.cos(gameBall.angle),
+                                                      gameBall.rect.center[1] + 100 * math.sin(gameBall.angle)),
+                                             width=5)
+                for s in slides:
+                    if s.hit:
+                        s.move()
+                for s in slides:
+                    s.draw()
                 pygame.display.flip()
+                print(angle.val)
+                #     end of slider attempt
+                renderMap(mapFile=SpeedChart, row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+                pygame.display.flip()
+            if game.ballState == 'moving':
+                gameBall.update()
+                ball_group.draw(screen)
+                pygame.display.flip()
+                #
+
+                for wall in wall_group_V:
+                    wall_hits_V5 = pygame.sprite.spritecollide(gameBall, wall_group_V5, False,
+                                                               pygame.sprite.collide_mask)
+                    if wall_hits_V5:
+                        gameBall.wallhit(wall31)
+                for wall in wall_group_H:
+                    wall_hits_H5 = pygame.sprite.spritecollide(gameBall, wall_group_H5, False,
+                                                               pygame.sprite.collide_mask)
+                    if wall_hits_H5:
+                        gameBall.wallhit(wall52)
+
+                #
+                if gameBall.rect.center[0] in range(95, 120) and gameBall.rect.center[1] in range(529, 556):
+                    gameBall.speed = 0
+                    print("SCORE")
+                    game.ballState = 'score'
+            if game.ballState == 'score':
+                renderMap(mapFile=Score, row=300, column=300)
+                display_par = "Swings: {}".format(game.par)
+                splashScreen(display_par, 305, 335)
+                pygame.display.flip()
+                print('Good Job')
+                print('Par: ', game.par)
+                time.sleep(1.5)
+                game.gameStage += 1
+                game.ballState = 'free'
+                gameBall.speed = 7
+            #     if ballsprite center is over black (hole), ball disappears, score
+            if gameBall.speed == 0:
+                if game.ballState != 'score':
+                    print("Stopped!")
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            print("Exiting...")
+                            pygame.quit()
+                            sys.exit()
+                        if event.type == pygame.MOUSEMOTION:
+                            mx, my = pygame.mouse.get_pos()
+                            print("x:", mx, "y:", my)
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            mx, my = pygame.mouse.get_pos()
+                            print("x:", mx, "y:", my)
+                            mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                    game.ballState = 'stopped'
+                    gameBall.speed = 7
+            while game.ballState == 'stopped':
+                # attempting slider
+                time.sleep(1 / 60)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        print("Exiting...")
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pos = pygame.mouse.get_pos()
+                        mx, my = pygame.mouse.get_pos()
+                        print("x:", mx, "y:", my)
+                        mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
+                        for s in slides:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        for s in slides:
+                            s.hit = False
+                            gameBall.angle = math.radians(angle.val)
+                            renderMap(mapFile=currentMap, row=0, column=0)
+                            renderMap(mapFile=currentStage, row=0, column=0)
+                            renderMap(mapFile=Hole, row=90, column=515)
+                            # bumper_group.draw(screen)
+                            wall_group_H5.draw(screen)
+                            wall_group_V5.draw(screen)
+                            ball_group.draw(screen)
+                            pygame.draw.line(surface=screen, color=(122, 165, 221), start_pos=gameBall.rect.center,
+                                             end_pos=(gameBall.rect.center[0] + 100 * math.cos(gameBall.angle),
+                                                      gameBall.rect.center[1] + 100 * math.sin(gameBall.angle)),
+                                             width=5)
+                for s in slides:
+                    if s.hit:
+                        s.move()
+                for s in slides:
+                    s.draw()
+                pygame.display.flip()
+                print(angle.val)
+                #     end of slider attempt
+                renderMap(mapFile=SpeedChart, row=575, column=100)
+                if gameBall.speed >= 1 and gameBall.speed <= 6:
+                    game.ballState = 'moving'
+            if game.gameStage == 6:
+                game.gameStage = 1
+                game.gameMode = 'splash'
+            pygame.display.flip()
 
 # GAME:
 

@@ -277,7 +277,7 @@ def play():
     while game.gameMode == 'play':
         time.sleep(1/60)
         mixer.music.load('./sounds/Elsie.mp3')
-        mixer.music.play(-1)
+        # mixer.music.play(-1)
         game.ballState = 'free'
         while game.gameStage == 1:
             time.sleep(1/60)
@@ -294,8 +294,8 @@ def play():
                     mx, my = pygame.mouse.get_pos()
                     print("x:", mx, "y:", my)
                     mouseEvents.mouseDown(game, stage, state, gameBall, pygame.mouse.get_pos())
-            renderMap(mapFile=currentMap, row=0, column=0)
-            renderMap(mapFile=currentStage, row=0, column=0)
+            renderMap(mapFile=currentMap, row=0, column=0)  # background (clouds)
+            renderMap(mapFile=currentStage, row=0, column=0)  # map/stage (golf green)
             renderMap(mapFile=Hole, row=495, column=115)
             bumper_group.draw(screen)
             wall_group_H.draw(screen)
